@@ -46,21 +46,22 @@ window.onload = function() {
     board.width = boardWidth;
     context = board.getContext("2d");
 
-    // Load Images
+    // Load Images (USING DIRECT LINKS NOW)
     dinoImg = new Image();
-    dinoImg.src = "https://github.com/ImKennyYip/google-dino-game/blob/master/img/dino.png?raw=true";
+    dinoImg.src = "https://raw.githubusercontent.com/ImKennyYip/google-dino-game/master/img/dino.png";
+
     dinoImg.onload = function() {
         context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
     }
 
     cactus1Img = new Image();
-    cactus1Img.src = "https://github.com/ImKennyYip/google-dino-game/blob/master/img/cactus1.png?raw=true";
+    cactus1Img.src = "https://raw.githubusercontent.com/ImKennyYip/google-dino-game/master/img/cactus1.png";
 
     cactus2Img = new Image();
-    cactus2Img.src = "https://github.com/ImKennyYip/google-dino-game/blob/master/img/cactus2.png?raw=true";
+    cactus2Img.src = "https://raw.githubusercontent.com/ImKennyYip/google-dino-game/master/img/cactus2.png";
 
     cactus3Img = new Image();
-    cactus3Img.src = "https://github.com/ImKennyYip/google-dino-game/blob/master/img/cactus3.png?raw=true";
+    cactus3Img.src = "https://raw.githubusercontent.com/ImKennyYip/google-dino-game/master/img/cactus3.png";
 
     requestAnimationFrame(update);
     setInterval(placeCactus, 1000); 
@@ -82,18 +83,25 @@ function update() {
     // Dino Physics
     velocityY += gravity;
     dino.y = Math.min(dino.y + velocityY, dinoY); 
-    context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
+    
+    // Draw Dino (Check if image is loaded)
+    if (dinoImg.complete) {
+        context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
+    }
 
     // Cactus Physics
     for (let i = 0; i < cactusArray.length; i++) {
         let cactus = cactusArray[i];
         cactus.x += velocityX;
-        context.drawImage(cactus.img, cactus.x, cactus.y, cactus.width, cactus.height);
+        
+        if (cactus.img && cactus.img.complete) {
+             context.drawImage(cactus.img, cactus.x, cactus.y, cactus.width, cactus.height);
+        }
 
         // Collision Check
         if (detectCollision(dino, cactus)) {
             gameOver = true;
-            dinoImg.src = "https://github.com/ImKennyYip/google-dino-game/blob/master/img/dino-dead.png?raw=true";
+            dinoImg.src = "https://raw.githubusercontent.com/ImKennyYip/google-dino-game/master/img/dino-dead.png";
             dinoImg.onload = function() {
                 context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
             }
@@ -181,5 +189,6 @@ function resetGame() {
     cactusArray = [];
     velocityY = 0;
     dino.y = dinoY;
-    dinoImg.src = "https://github.com/ImKennyYip/google-dino-game/blob/master/img/dino.png?raw=true";
+    dinoImg.src = "https://raw.githubusercontent.com/ImKennyYip/google-dino-game/master/img/dino.png";
 }
+
